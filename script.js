@@ -1,0 +1,93 @@
+class BankAccount {
+    constructor(username, password) {
+        this.username = username;
+        this.password = password;
+        this.balance = 0;
+        this.history = [];
+    }
+
+    deposit(amount) {
+        this.balance += amount;
+        this.addToHistory(`Deposited $${amount}`);
+    }
+
+    withdraw(amount) {
+        if (amount > this.balance) {
+            alert("Insufficient funds.");
+            return;
+        }
+
+        this.balance -= amount;
+        this.addToHistory(`Withdrew $${amount}`);
+    }
+    transfer(amount, recipient) {
+        if (amount > this.balance) {
+            alert("Insufficient funds.");
+            return;
+        }
+        this.balance -= amount;
+        recipient.deposit(amount);
+        this.addToHistory(`Transferred $${amount} to ${recipient.username}`);
+
+    }
+    addToHistory(action) {
+        const timestamp = new Date().toLocaleString();
+        this.history.push(`${timestamp}: ${action}`);
+        updateTransactionHistory();
+    }
+    searchHistory(term) {
+        return this.history.filter(entry => entry.toLowerCase().includes(term.toLowerCase()));
+    }
+}
+
+let accounts = {};
+let currentAccount = null;
+
+function createAccount() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (accounts[username]) {
+        alert("Username already taken.");
+        return;
+    }
+    accounts[username] = new BankAccount(username, password);
+    alert("Account created successfully!");
+}
+
+function authenticate() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const account = accounts[username];
+    if (account && account.password === password) {
+        currentAccount = account;
+        document.querySelector('.auth-section').computedStyleMap.display = 'none';
+        document.querySelector('.account-section').style.display = 'block';
+        updateBalance();
+    } else{
+        alert("Invalid credentials.");
+    }
+}
+
+function deposit() {
+    const amount = parseFloat(document.getElementById('amount').value);
+    if (amount > 0) {
+        currentAccount.deposit(amount);
+        updateBalance();
+    }
+}
+
+function withdraw() {
+    const amount = parseFloat(document.getElementById('amount').value);
+    if (amount > 0) {
+        currentAccount.withdraw(amount);
+        updateBalance();
+    }
+
+}
+
+function transfer() {
+    const amount = parseFloat(document.getElementById('amount').value);
+    
+}
