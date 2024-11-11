@@ -154,4 +154,16 @@ function createAccount() {
     const password = document.getElementById('new-password').value;
 
     // check if username is taken
+    if (accounts[username]) {
+        alert("Username already taken. Please choose a different username.");
+        return;
+
+    }
+    // create and store the new account
+    accounts[username] = {password, balance: 0, history: []};
+    alert("Account created successfully!");
+
+    // clear input fields
+    document.getElementById('new-username').value ='';
+    document.getElementById('new-password').value ='';
 }
