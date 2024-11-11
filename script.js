@@ -54,7 +54,11 @@ class BankAccount {
     }
   
     accounts[username] = new BankAccount(username, password);
-    alert("Account created successfully!");
+    alert("Account created successfully! Please log in.");
+  
+    // Reset input fields after creating the account
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
   }
   
   function authenticate() {
@@ -68,7 +72,7 @@ class BankAccount {
       document.querySelector('.account-section').style.display = 'block';
       updateBalance();
     } else {
-      alert("Invalid credentials.");
+      alert("Invalid credentials. Please try again.");
     }
   }
   
@@ -77,6 +81,9 @@ class BankAccount {
     if (amount > 0) {
       currentAccount.deposit(amount);
       updateBalance();
+      document.getElementById('amount').value = ''; // Clear the input after deposit
+    } else {
+      alert("Please enter a valid amount.");
     }
   }
   
@@ -85,6 +92,9 @@ class BankAccount {
     if (amount > 0) {
       currentAccount.withdraw(amount);
       updateBalance();
+      document.getElementById('amount').value = ''; // Clear the input after withdrawal
+    } else {
+      alert("Please enter a valid amount.");
     }
   }
   
@@ -101,6 +111,10 @@ class BankAccount {
     if (amount > 0 && recipient) {
       currentAccount.transfer(amount, recipient);
       updateBalance();
+      document.getElementById('amount').value = ''; // Clear the input after transfer
+      document.getElementById('recipient').value = ''; // Clear the recipient field
+    } else {
+      alert("Please enter a valid amount and recipient.");
     }
   }
   
